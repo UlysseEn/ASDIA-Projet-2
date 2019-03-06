@@ -4,6 +4,12 @@
 #include "swCalc.h"
 #include "swCost.h"
 
+/*
+  Find the highest number in mat, return its index
+*/
+
+int maxValue(struct matrix *mat) ;
+
 /* Find highest scoring local alignment(s) in mat, and print to stdout
    the corresponding best alignments.
    mat must have been filled with scores and prevs.
