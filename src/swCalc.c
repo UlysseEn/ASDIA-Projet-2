@@ -35,3 +35,8 @@ void swPrintMat(struct matrix *mat) {
     }
   }
 }
+
+void swFreeMat(struct matrix *mat){
+  free(mat->cells);
+  free(mat);
+}

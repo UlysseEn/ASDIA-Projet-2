@@ -25,7 +25,7 @@ int main(void)
 	   swPrintMat(mat); */
 	printBestAlis(mat,cost,s1,s2);
 
-	// swFreeMat(mat);
+	swFreeMat(mat);
 	free(cost);
 	free(s1);
 	free(s2);
