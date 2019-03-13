@@ -35,15 +35,30 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
   *out_cur2 = '\0';
 
   while (mat->cells[index].scoreD >0){
-    if (mat->cells[index].scoreD > mat->cells[index - mat->w - 1].scoreD){
-      *(--out_cur) = s1[index%mat->w - 1];
+    //vertical
+    if (mat->cells[index-mat->w].scoreD + cost->indelOpen == mat->cells[index].scoreD){
+      *(--out_cur) = '-';
       *(--out_cur2) = s2[index/mat->w - 1];
+      index = index - mat->w;
     }
+    //horizontal
+    else if(mat->cells[index-1].scoreD + cost->indelOpen == mat->cells[index].scoreD) {
+      *(--out_cur) = s1[index%mat->w - 1];
+      *(--out_cur2) = '-';
+      index = index - 1;
+    }
+    //diagonal
     else {
-      *(--out_cur) = tolower(s1[index%mat->w - 1]);
-      *(--out_cur2) = tolower(s2[index/mat->w - 1]);
+      if (mat->cells[index].scoreD > mat->cells[index - mat->w - 1].scoreD){
+        *(--out_cur) = s1[index%mat->w - 1];
+        *(--out_cur2) = s2[index/mat->w - 1];
+      }
+      else {
+        *(--out_cur) = tolower(s1[index%mat->w - 1]);
+        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
+      }
+      index = index - mat->w - 1;
     }
-    index = index - mat->w - 1;
   }
 
   printf("s1 %s\n", out_cur);
