@@ -8,12 +8,13 @@
 
 struct matrix *swInitMat(char *s1, char *s2) {
     struct matrix *mat = NULL;
-    mat = malloc(sizeof(struct matrix*));
+    mat = malloc(sizeof(struct matrix));
     mat->w = strlen(s1) + 1;
     mat->h = strlen(s2) + 1;
-    mat->cells = malloc(mat->w * mat->h * sizeof(struct cells*));
-    for(size_t i=0; i <= mat->w; i++) {
-      for(size_t j=0; j <= mat->h; j++) {
+    mat->cells = malloc(mat->w * mat->h * sizeof(struct cell));
+    printf("sizeof = %d\n", sizeof(struct cells*));
+    for(size_t i=0; i < mat->w; i++) {
+      for(size_t j=0; j < mat->h; j++) {
         if(i==0 || j==0) {
           mat->cells[mat->w * i + j].score = 0;
         }
