@@ -12,8 +12,8 @@ struct matrix *swInitMat(char *s1, char *s2) {
     mat->w = strlen(s1) + 1;
     mat->h = strlen(s2) + 1;
     mat->cells = malloc(mat->w * mat->h * sizeof(struct cell));
-    for(size_t i=0; i < mat->w; i++) {
-      for(size_t j=0; j < mat->h; j++) {
+    for(size_t i=0; i < mat->h; i++) {
+      for(size_t j=0; j < mat->w; j++) {
         if(i==0 || j==0) {
           mat->cells[mat->w * i + j].scoreD = 0;
         }
