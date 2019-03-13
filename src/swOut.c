@@ -33,9 +33,9 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 
   char *out_cur2 = out_s2 + index - 1;
   *out_cur2 = '\0';
-  
-  while (mat->cells[index].score >0){
-    if (mat->cells[index].score > mat->cells[index - mat->w - 1].score){
+
+  while (mat->cells[index].scoreD >0){
+    if (mat->cells[index].scoreD > mat->cells[index - mat->w - 1].scoreD){
       *(--out_cur) = s1[index%mat->w - 1];
       *(--out_cur2) = s2[index/mat->w - 1];
     }
