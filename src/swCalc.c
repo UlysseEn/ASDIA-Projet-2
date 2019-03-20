@@ -18,6 +18,9 @@ struct matrix *swInitMat(char *s1, char *s2) {
           mat->cells[mat->w * i + j].scoreD = 0;
           mat->cells[mat->w * i + j].scoreV = 0;
           mat->cells[mat->w * i + j].scoreH = 0;
+          mat->cells[mat->w * i + j].prevsD = 0;
+          mat->cells[mat->w * i + j].prevsV = 0;
+          mat->cells[mat->w * i + j].prevsH = 0;
         }
         /*else {
           mat->cells[mat->w * i + j].scoreD = 1;
@@ -34,6 +37,7 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
       double score2 = mat->cells[mat->w * i + j-1].scoreD + cost->indelOpen;
       double score3 = mat->cells[mat->w * (i-1) + j-1].scoreD + cost->subst(s1[j-1], s2[i-1]);
       mat->cells[mat->w * i + j].scoreD = maxDoubles(score1, score2, score3);
+      mat->cells[mat->w * i + j].prevsD = findPrevs(score1, score2, score3);
     }
   }
 }
@@ -53,18 +57,21 @@ void fillD(struct matrix *mat, struct cost *cost, size_t i, size_t j, char *s1, 
   double score2 = mat->cells[mat->w * (i-1) + (j-1)].scoreV + cost->subst(s1[j-1], s2[i-1]);
   double score3 = mat->cells[mat->w * (i-1) + (j-1)].scoreH + cost->subst(s1[j-1], s2[i-1]);
   mat->cells[mat->w * i + j].scoreD = maxDoubles(score1, score2, score3);
+  mat->cells[mat->w * i + j].prevsD = findPrevs(score1, score2, score3);
 }
 void fillV(struct matrix *mat, struct cost *cost, size_t i, size_t j) {
   double score1 = mat->cells[mat->w * (i-1) + j].scoreD + cost->indelOpen;
   double score2 = mat->cells[mat->w * (i-1) + j].scoreV + cost->indelExtend;
   double score3 = mat->cells[mat->w * (i-1) + j].scoreH + cost->indelOpen;
   mat->cells[mat->w * i + j].scoreV = maxDoubles(score1, score2, score3);
+  mat->cells[mat->w * i + j].prevsV = findPrevs(score1, score2, score3);
 }
 void fillH(struct matrix *mat, struct cost *cost, size_t i, size_t j) {
   double score1 = mat->cells[mat->w * i + (j-1)].scoreD + cost->indelOpen;
   double score2 = mat->cells[mat->w * i + (j-1)].scoreV + cost->indelOpen;
   double score3 = mat->cells[mat->w * i + (j-1)].scoreH + cost->indelExtend;
   mat->cells[mat->w * i + j].scoreH = maxDoubles(score1, score2, score3);
+  mat->cells[mat->w * i + j].prevsH = findPrevs(score1, score2, score3);
 }
 
 double maxDoubles(double score1, double score2, double score3) {
@@ -72,6 +79,20 @@ double maxDoubles(double score1, double score2, double score3) {
   score1 = ((score1 < score3) ? score3 : score1);
   score1 = ((score1 < 0) ? 0 : score1);
   return score1;
+}
+
+uint8_t findPrevs(double score1, double score2, double score3) {
+  uint8_t ans = 0;
+  if(score1 >= score2 && score1 >= score3) {
+    ans += 1;
+  }
+  if(score2 >= score1 && score2 >= score3) {
+    ans += 2;
+  }
+  if(score3 >= score2 && score3 >= score1) {
+    ans += 4;
+  }
+  return ans;
 }
 
 void swPrintMat(struct matrix *mat) {
@@ -82,6 +103,14 @@ void swPrintMat(struct matrix *mat) {
     for(size_t j=0; j < mat->w; j++) {
       //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
       printf("%.0f ", mat->cells[mat->w * i + j].scoreD);
+    }
+    printf("\n");
+  }
+  printf("\n");
+  for(size_t i=0; i < mat->h; i++) {
+    for(size_t j=0; j < mat->w; j++) {
+      //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
+      printf("%d ", mat->cells[mat->w * i + j].prevsD);
     }
     printf("\n");
   }
