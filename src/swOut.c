@@ -69,7 +69,7 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
   free(out_s2);
 }
 
-void printBestAlisAffine(struct matrix *mat, struct cost *cost, char *s1, char *s2){
+void printBestAlisAffine(struct matrix *mat, char *s1, char *s2){
   int index = maxValue(mat);
   char *out_s1 = NULL;
   char *out_s2 = NULL;
@@ -85,58 +85,46 @@ void printBestAlisAffine(struct matrix *mat, struct cost *cost, char *s1, char *
   //D = 1; V = 2; H = 3
   uint8_t current = 1;
 
-  while (mat->cells[index].scoreD >0){
+  while (mat->cells[index].scoreD >0 || current != 1){
     if(current == 1){
+      *(--out_cur) = s1[index%mat->w - 1];
+      *(--out_cur2) = s2[index/mat->w - 1];
       if(mat->cells[index].prevsD % 2 == 1){
         current = 1;
-        *(--out_cur) = s1[index%mat->w - 1];
-        *(--out_cur2) = s2[index/mat->w - 1];
       }
-      else if(mat->cells[index].prevsD % 4 == 1){
+      else if(mat->cells[index].prevsD % 4 == 2 || mat->cells[index].prevsD % 4 == 3){
         current = 2;
-        *(--out_cur) = '-';
-        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
       }
       else{
         current = 3;
-        *(--out_cur) = tolower(s1[index%mat->w - 1]);
-        *(--out_cur2) = '-';
       }
       index = index - mat->w - 1;
     }
     else if(current == 2){
+      *(--out_cur) = '-';
+      *(--out_cur2) = tolower(s2[index/mat->w - 1]);
       if(mat->cells[index].prevsV % 2 == 1){
         current = 1;
-        *(--out_cur) = s1[index%mat->w - 1];
-        *(--out_cur2) = s2[index/mat->w - 1];
       }
-      else if(mat->cells[index].prevsV % 4 == 1){
+      else if(mat->cells[index].prevsV % 4 == 2 || mat->cells[index].prevsV % 4 == 3){
         current = 2;
-        *(--out_cur) = '-';
-        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
       }
       else{
         current = 3;
-        *(--out_cur) = tolower(s1[index%mat->w - 1]);
-        *(--out_cur2) = '-';
       }
       index = index - mat->w;
     }
     else{
+      *(--out_cur) = tolower(s1[index%mat->w - 1]);
+      *(--out_cur2) = '-';
       if(mat->cells[index].prevsH % 2 == 1){
         current = 1;
-        *(--out_cur) = s1[index%mat->w - 1];
-        *(--out_cur2) = s2[index/mat->w - 1];
       }
-      else if(mat->cells[index].prevsH % 4 == 1){
+      else if(mat->cells[index].prevsH % 4 == 2 || mat->cells[index].prevsH % 4 == 3){
         current = 2;
-        *(--out_cur) = '-';
-        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
       }
       else{
         current = 3;
-        *(--out_cur) = tolower(s1[index%mat->w - 1]);
-        *(--out_cur2) = '-';
       }
       index = index - 1;
     }
