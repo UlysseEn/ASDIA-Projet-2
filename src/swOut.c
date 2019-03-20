@@ -67,3 +67,82 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
   free(out_s1);
   free(out_s2);
 }
+
+void printBestAlisAffine(struct matrix *mat, struct cost *cost, char *s1, char *s2){
+  int index = maxValue(mat);
+  char *out_s1 = NULL;
+  char *out_s2 = NULL;
+  out_s1 = malloc(index * sizeof(char));
+  out_s2 = malloc(index * sizeof(char));
+
+  char *out_cur = out_s1 + index - 1;
+  *out_cur = '\0';
+
+  char *out_cur2 = out_s2 + index - 1;
+  *out_cur2 = '\0';
+
+  //D = 1; V = 2; H = 3
+  uint8_t current = 1;
+
+  while (mat->cells[index].scoreD >0){
+    if(current == 1){
+      if(mat->cells[index].prevsD % 2 == 1){
+        current = 1;
+        *(--out_cur) = s1[index%mat->w - 1];
+        *(--out_cur2) = s2[index/mat->w - 1];
+      }
+      else if(mat->cells[index].prevsD % 4 == 1){
+        current = 2;
+        *(--out_cur) = '-';
+        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
+      }
+      else{
+        current = 3;
+        *(--out_cur) = tolower(s1[index%mat->w - 1]);
+        *(--out_cur2) = '-';
+      }
+      index = index - mat->w - 1;
+    }
+    else if(current == 2){
+      if(mat->cells[index].prevsV % 2 == 1){
+        current = 1;
+        *(--out_cur) = s1[index%mat->w - 1];
+        *(--out_cur2) = s2[index/mat->w - 1];
+      }
+      else if(mat->cells[index].prevsV % 4 == 1){
+        current = 2;
+        *(--out_cur) = '-';
+        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
+      }
+      else{
+        current = 3;
+        *(--out_cur) = tolower(s1[index%mat->w - 1]);
+        *(--out_cur2) = '-';
+      }
+      index = index - mat->w;
+    }
+    else{
+      if(mat->cells[index].prevsH % 2 == 1){
+        current = 1;
+        *(--out_cur) = s1[index%mat->w - 1];
+        *(--out_cur2) = s2[index/mat->w - 1];
+      }
+      else if(mat->cells[index].prevsH % 4 == 1){
+        current = 2;
+        *(--out_cur) = '-';
+        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
+      }
+      else{
+        current = 3;
+        *(--out_cur) = tolower(s1[index%mat->w - 1]);
+        *(--out_cur2) = '-';
+      }
+      index = index - 1;
+    }
+  }
+  printf("s1 %s\n", out_cur);
+  printf("s2 %s\n", out_cur2);
+
+  free(out_s1);
+  free(out_s2);
+}
