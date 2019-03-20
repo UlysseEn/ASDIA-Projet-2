@@ -18,13 +18,13 @@ int main(void)
 	printf("Sequences read:\ns1\t%s\ns2\t%s\n\n", s1, s2) ;
 
 	/* affine cost for long gaps eg spliced RNA on genome */
-	struct cost *cost = costDna(-100,-0.05);
+	struct cost *cost = costDna(-1,-0.05);
 	struct matrix *mat = swInitMat(s1,s2);
 	swFillMatAffine(mat,cost,s1,s2);
 	swPrintMatAffine(mat);
 	/* for debugging you can uncomment:
 	   swPrintMat(mat); */
-	printBestAlis(mat,cost,s1,s2);
+	//printBestAlis(mat,cost,s1,s2);
 
 	swFreeMat(mat);
 	free(cost);

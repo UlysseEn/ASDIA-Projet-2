@@ -91,10 +91,27 @@ void swPrintMatAffine(struct matrix *mat) {
   printf("mat->w = %d\n", mat->w);
   printf("mat->h = %d\n", mat->h);
   printf("\n------- Ma Matrice -------- \n\n");
+  printf("SCORE D !\n");
   for(size_t i=0; i < mat->h; i++) {
     for(size_t j=0; j < mat->w; j++) {
       //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
-      printf("%.0f ", mat->cells[mat->w * i + j].scoreD);
+      printf("%.2f ", mat->cells[mat->w * i + j].scoreD);
+    }
+    printf("\n");
+  }
+  printf("SCORE V !\n");
+  for(size_t i=0; i < mat->h; i++) {
+    for(size_t j=0; j < mat->w; j++) {
+      //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
+      printf("%.2f ", mat->cells[mat->w * i + j].scoreV);
+    }
+    printf("\n");
+  }
+  printf("SCORE H !\n");
+  for(size_t i=0; i < mat->h; i++) {
+    for(size_t j=0; j < mat->w; j++) {
+      //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
+      printf("%.2f ", mat->cells[mat->w * i + j].scoreH);
     }
     printf("\n");
   }
