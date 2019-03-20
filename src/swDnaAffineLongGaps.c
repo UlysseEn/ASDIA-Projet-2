@@ -24,7 +24,7 @@ int main(void)
 	swPrintMatAffine(mat);
 	/* for debugging you can uncomment:
 	   swPrintMat(mat); */
-	//printBestAlis(mat,cost,s1,s2);
+	printBestAlisAffine(mat,s1,s2);
 
 	swFreeMat(mat);
 	free(cost);

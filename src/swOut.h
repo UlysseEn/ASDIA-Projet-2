@@ -16,5 +16,6 @@ int maxValue(struct matrix *mat) ;
    cost is provided so mismatches with negative scores can be lowercased.
 */
 void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) ;
+void printBestAlisAffine(struct matrix *mat, char *s1, char *s2) ;
 
 #endif
