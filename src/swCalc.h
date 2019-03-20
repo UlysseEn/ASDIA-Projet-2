@@ -51,6 +51,8 @@ void fillV(struct matrix *mat, struct cost *cost, size_t i, size_t j);
 
 void fillH(struct matrix *mat, struct cost *cost, size_t i, size_t j);
 
+uint8_t findPrevs(double score1, double score2, double score3);
+
 double maxDoubles(double score1, double score2, double score3);
 /* free all allocated memory in mat */
 void swFreeMat(struct matrix *mat);

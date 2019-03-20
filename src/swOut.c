@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "mem.h"
 #include "swOut.h"
@@ -28,10 +29,10 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
   out_s1 = malloc(index * sizeof(char));
   out_s2 = malloc(index * sizeof(char));
 
-  char *out_cur = out_s1 + index - 1;
+  char* out_cur = out_s1 + index - 1;
   *out_cur = '\0';
 
-  char *out_cur2 = out_s2 + index - 1;
+  char* out_cur2 = out_s2 + index - 1;
   *out_cur2 = '\0';
 
   while (mat->cells[index].scoreD >0){

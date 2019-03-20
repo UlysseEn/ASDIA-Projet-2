@@ -10,6 +10,5 @@ void *mallocOrDie(size_t size, char *errMess)
 		fprintf(stderr, "%s\n", errMess);
 		exit(1);
 	}
-	return(res) ;
+	return(res);
 }
-
