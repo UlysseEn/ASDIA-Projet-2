@@ -43,11 +43,20 @@ struct matrix *swInitMat(char *s1, char *s2);
 */
 void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2) ;
 
+void swFillMatAffine(struct matrix *mat, struct cost *cost, char *s1, char *s2) ;
 
+void fillD(struct matrix *mat, struct cost *cost, size_t i, size_t j, char *s1, char *s2);
+
+void fillV(struct matrix *mat, struct cost *cost, size_t i, size_t j);
+
+void fillH(struct matrix *mat, struct cost *cost, size_t i, size_t j);
+
+double maxDoubles(double score1, double score2, double score3);
 /* free all allocated memory in mat */
 void swFreeMat(struct matrix *mat);
 
 /* print contents of matrix, for debugging */
 void swPrintMat(struct matrix *mat);
+void swPrintMatAffine(struct matrix *mat);
 
 #endif
