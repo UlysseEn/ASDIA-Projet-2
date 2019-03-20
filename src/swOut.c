@@ -24,6 +24,9 @@ int maxValue(struct matrix *mat) {
 
 void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
   int index = maxValue(mat);
+  int index2 = index;
+  double valMax = mat->cells[index].scoreD;
+
   char *out_s1 = NULL;
   char *out_s2 = NULL;
   out_s1 = malloc(index * sizeof(char));
@@ -34,9 +37,9 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 
   char* out_cur2 = out_s2 + index - 1;
   *out_cur2 = '\0';
-
+  uint8_t test = 0;
   while (mat->cells[index].scoreD >0){
-    //vertical
+  /*  //vertical
     if (mat->cells[index-mat->w].scoreD + cost->indelOpen == mat->cells[index].scoreD){
       *(--out_cur) = '-';
       *(--out_cur2) = tolower(s2[index/mat->w - 1]);
@@ -58,13 +61,52 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
         *(--out_cur) = tolower(s1[index%mat->w - 1]);
         *(--out_cur2) = tolower(s2[index/mat->w - 1]);
       }
-      index = index - mat->w - 1;
+      index = index - mat->w - 1; */
+      //diagonal
+
+      if(mat->cells[index].prevsD - 4 >= 0) {
+        if (mat->cells[index].scoreD > mat->cells[index - mat->w - 1].scoreD){
+          *(--out_cur) = s1[index%mat->w - 1];
+          *(--out_cur2) = s2[index/mat->w - 1];
+        }
+        else {
+          *(--out_cur) = tolower(s1[index%mat->w - 1]);
+          *(--out_cur2) = tolower(s2[index/mat->w - 1]);
+        }
+        index = index - mat->w - 1;
+        if(mat->cells[index].prevsD - 4 > 0) {
+          mat->cells[index].prevsD -= 4;
+          test = 1;
+        }
+      }
+      else if(mat->cells[index].prevsD - 2 >= 0) {
+        *(--out_cur) = tolower(s1[index%mat->w - 1]);
+        *(--out_cur2) = '-';
+        index = index - 1;
+        if(mat->cells[index].prevsD - 2 > 0) {
+          mat->cells[index].prevsD -= 2;
+          test = 1;
+        }
+      }
+      else if(mat->cells[index].prevsD - 1 >= 0) {
+        *(--out_cur) = '-';
+        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
+        index = index - mat->w;
+      }
     }
-  }
 
-  printf("s1 %s\n", out_cur);
-  printf("s2 %s\n", out_cur2);
+    /*if(test == 1) {
+      printBestAlis(mat, cost, s1, s2);
+    }
 
-  free(out_s1);
-  free(out_s2);
+    mat->cells[index2].scoreD = 0;
+    if(mat->cells[maxValue(mat)].scoreD == valMax) {
+      printBestAlis(mat, cost, s1, s2);
+    }*/
+
+    printf("s1 %s\n", out_cur);
+    printf("s2 %s\n", out_cur2);
+    printf("\n");
+    free(out_s1);
+    free(out_s2);
 }
