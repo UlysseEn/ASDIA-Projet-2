@@ -22,7 +22,7 @@ int maxValue(struct matrix *mat) {
     return index;
 }
 
-void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
+void printBestAlis(struct matrix *mat, char *s1, char *s2){
   int index = maxValue(mat);
   int index2 = index;
   double valMax = mat->cells[index].scoreD;
@@ -37,33 +37,10 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 
   char* out_cur2 = out_s2 + index - 1;
   *out_cur2 = '\0';
-  uint8_t test = 0;
-  while (mat->cells[index].scoreD >0){
-  /*  //vertical
-    if (mat->cells[index-mat->w].scoreD + cost->indelOpen == mat->cells[index].scoreD){
-      *(--out_cur) = '-';
-      *(--out_cur2) = tolower(s2[index/mat->w - 1]);
-      index = index - mat->w;
-    }
-    //horizontal
-    else if(mat->cells[index-1].scoreD + cost->indelOpen == mat->cells[index].scoreD) {
-      *(--out_cur) = tolower(s1[index%mat->w - 1]);
-      *(--out_cur2) = '-';
-      index = index - 1;
-    }
-    //diagonal
-    else {
-      if (mat->cells[index].scoreD > mat->cells[index - mat->w - 1].scoreD){
-        *(--out_cur) = s1[index%mat->w - 1];
-        *(--out_cur2) = s2[index/mat->w - 1];
-      }
-      else {
-        *(--out_cur) = tolower(s1[index%mat->w - 1]);
-        *(--out_cur2) = tolower(s2[index/mat->w - 1]);
-      }
-      index = index - mat->w - 1; */
-      //diagonal
 
+  uint8_t test = 0;
+
+  while (mat->cells[index].scoreD >0){
       if(mat->cells[index].prevsD - 4 >= 0) {
         if (mat->cells[index].scoreD > mat->cells[index - mat->w - 1].scoreD){
           *(--out_cur) = s1[index%mat->w - 1];
@@ -73,20 +50,20 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
           *(--out_cur) = tolower(s1[index%mat->w - 1]);
           *(--out_cur2) = tolower(s2[index/mat->w - 1]);
         }
-        index = index - mat->w - 1;
-        if(mat->cells[index].prevsD - 4 > 0) {
+        if(mat->cells[index].prevsD - 4 > 0  && test == 0) {
           mat->cells[index].prevsD -= 4;
           test = 1;
         }
+        index = index - mat->w - 1;
       }
       else if(mat->cells[index].prevsD - 2 >= 0) {
         *(--out_cur) = tolower(s1[index%mat->w - 1]);
         *(--out_cur2) = '-';
-        index = index - 1;
-        if(mat->cells[index].prevsD - 2 > 0) {
+        if(mat->cells[index].prevsD - 2 > 0 && test == 0) {
           mat->cells[index].prevsD -= 2;
           test = 1;
         }
+        index = index - 1;
       }
       else if(mat->cells[index].prevsD - 1 >= 0) {
         *(--out_cur) = '-';
@@ -95,14 +72,14 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
       }
     }
 
-    /*if(test == 1) {
-      printBestAlis(mat, cost, s1, s2);
+    if(test == 1) {
+      printBestAlis(mat, s1, s2);
     }
 
     mat->cells[index2].scoreD = 0;
     if(mat->cells[maxValue(mat)].scoreD == valMax) {
-      printBestAlis(mat, cost, s1, s2);
-    }*/
+      printBestAlis(mat, s1, s2);
+    }
 
     printf("s1 %s\n", out_cur);
     printf("s2 %s\n", out_cur2);
@@ -113,6 +90,9 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 
 void printBestAlisAffine(struct matrix *mat, char *s1, char *s2){
   int index = maxValue(mat);
+  int index2 = index;
+  double valMax = mat->cells[index].scoreD;
+
   char *out_s1 = NULL;
   char *out_s2 = NULL;
   out_s1 = malloc(index * sizeof(char));
@@ -127,6 +107,8 @@ void printBestAlisAffine(struct matrix *mat, char *s1, char *s2){
   //D = 1; V = 2; H = 3
   uint8_t current = 1;
 
+  uint8_t test = 0;
+
   while (mat->cells[index].scoreD >0 || current != 1){
     if(current == 1){
       *(--out_cur) = s1[index%mat->w - 1];
@@ -136,9 +118,17 @@ void printBestAlisAffine(struct matrix *mat, char *s1, char *s2){
       }
       else if(mat->cells[index].prevsD % 4 == 2 || mat->cells[index].prevsD % 4 == 3){
         current = 2;
+        if(mat->cells[index].prevsD - 2 > 0  && test == 0) {
+          mat->cells[index].prevsD -= 2;
+          test = 1;
+        }
       }
       else{
         current = 3;
+        if(mat->cells[index].prevsD - 4 > 0  && test == 0) {
+          mat->cells[index].prevsD -= 4;
+          test = 1;
+        }
       }
       index = index - mat->w - 1;
     }
@@ -150,9 +140,17 @@ void printBestAlisAffine(struct matrix *mat, char *s1, char *s2){
       }
       else if(mat->cells[index].prevsV % 4 == 2 || mat->cells[index].prevsV % 4 == 3){
         current = 2;
+        if(mat->cells[index].prevsV - 2 > 0  && test == 0) {
+          mat->cells[index].prevsV -= 2;
+          test = 1;
+        }
       }
       else{
         current = 3;
+        if(mat->cells[index].prevsV - 4 > 0  && test == 0) {
+          mat->cells[index].prevsV -= 4;
+          test = 1;
+        }
       }
       index = index - mat->w;
     }
@@ -164,13 +162,31 @@ void printBestAlisAffine(struct matrix *mat, char *s1, char *s2){
       }
       else if(mat->cells[index].prevsH % 4 == 2 || mat->cells[index].prevsH % 4 == 3){
         current = 2;
+        if(mat->cells[index].prevsH - 2 > 0  && test == 0) {
+          mat->cells[index].prevsH -= 2;
+          test = 1;
+        }
       }
       else{
         current = 3;
+        if(mat->cells[index].prevsH - 4 > 0  && test == 0) {
+          mat->cells[index].prevsH -= 4;
+          test = 1;
+        }
       }
       index = index - 1;
     }
   }
+
+  if(test == 1) {
+    printBestAlisAffine(mat, s1, s2);
+  }
+
+  mat->cells[index2].scoreD = 0;
+  if(mat->cells[maxValue(mat)].scoreD == valMax) {
+    printBestAlisAffine(mat, s1, s2);
+  }
+
   printf("s1 %s\n", out_cur);
   printf("s2 %s\n", out_cur2);
 

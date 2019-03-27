@@ -23,7 +23,7 @@ int main(void)
 	swPrintMat(mat);
 	/* for debugging you can uncomment:
 	   swPrintMat(mat); */
-	printBestAlis(mat,cost,s1,s2);
+	printBestAlis(mat,s1,s2);
 
 	swFreeMat(mat);
 	free(cost);

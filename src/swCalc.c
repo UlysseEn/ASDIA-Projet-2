@@ -144,6 +144,30 @@ void swPrintMatAffine(struct matrix *mat) {
     }
     printf("\n");
   }
+  printf("PREVS D !\n");
+  for(size_t i=0; i < mat->h; i++) {
+    for(size_t j=0; j < mat->w; j++) {
+      //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
+      printf("%d ", mat->cells[mat->w * i + j].prevsD);
+    }
+    printf("\n");
+  }
+  printf("PREVS V !\n");
+  for(size_t i=0; i < mat->h; i++) {
+    for(size_t j=0; j < mat->w; j++) {
+      //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
+      printf("%d ", mat->cells[mat->w * i + j].prevsV);
+    }
+    printf("\n");
+  }
+  printf("PREVS H !\n");
+  for(size_t i=0; i < mat->h; i++) {
+    for(size_t j=0; j < mat->w; j++) {
+      //printf("cells[%d,%d] = %.0f\n", i, j, mat->cells[mat->w * i + j].scoreD);
+      printf("%d ", mat->cells[mat->w * i + j].prevsH);
+    }
+    printf("\n");
+  }
 }
 
 void swFreeMat(struct matrix *mat){
