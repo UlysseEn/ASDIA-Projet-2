@@ -23,7 +23,7 @@ int main(void)
 
 	swFillMatAffine(mat,cost,s1,s2);
 
-	swPrintMatAffine(mat);
+	//swPrintMatAffine(mat);
 
 	printBestAlisAffine(mat,s1,s2);
 
